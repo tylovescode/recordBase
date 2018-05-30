@@ -112,6 +112,20 @@ app.post('/records/edit/:id', (req, res) => {
     })
 })
 
+//DELETE request
+app.delete('/record/:id', (req, res) => {
+    let query = {_id:req.params.id}
+
+    Record.remove(query, (err) => {
+        if(err) {
+            console.log(err);
+        }
+        //Status 200 is default, so just send message
+        res.send('Success');
+        });
+    });
+
+
 //Start Server
 app.listen(3000, function() {
     console.log('Server started on port 3000')
