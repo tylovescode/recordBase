@@ -55,7 +55,7 @@ app.get('/record/:id', (req, res) => {
             record: record
         });
     });
-})
+});
 
 //Add Submit POST Route
 app.post('/records/add', (req, res) => {
@@ -71,8 +71,8 @@ app.post('/records/add', (req, res) => {
         } else {
             res.redirect('/');
         }
-    })
-})
+    });
+});
 
 //Add records route
 app.get('/records/add', (req, res) => {
@@ -89,7 +89,7 @@ app.get('/record/edit/:id', (req, res) => {
             record: record
         });
     });
-})
+});
 
 //UPDATE Submit POST Route
 app.post('/records/edit/:id', (req, res) => {
@@ -109,8 +109,8 @@ app.post('/records/edit/:id', (req, res) => {
         } else {
             res.redirect('/');
         }
-    })
-})
+    });
+});
 
 //DELETE request
 app.delete('/record/:id', (req, res) => {
