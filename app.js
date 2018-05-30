@@ -1,5 +1,21 @@
 const express = require('express');
 const path = require('path');
+const mongoose = require('mongoose');
+
+//Connect to mongoose
+mongoose.connect('mongodb://localhost/recordsbase');
+let db = mongoose.connection;
+
+//Check connection
+db.once('open', function() {
+    console.log('You are now connected to MongoDB');
+});
+
+//Check for db errors
+db.on('error', function(err) {
+    console.log(err);
+});
+
 //Initialize app
 const app = express();
 
