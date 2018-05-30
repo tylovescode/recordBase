@@ -2,3 +2,23 @@ extends layout
         
 block content
     h1 #{title}
+    form(method='POST', action='/records/add')
+        #form-group
+            label Title:
+                input.form-control(name='title', type='text')
+        #form-group
+            label Artist:
+                input.form-control(name='artist', type='text')
+        #form-group
+            label Format:
+                input.form-control(name='format', type='text')
+        //- .dropdown
+        //-     button#dropdownMenuButton.btn.btn-secondary.dropdown-toggle(type='button', data-toggle='dropdown' aria-haspopup='true', aria-expanded='false')
+        //-         | Format
+        //-     .dropdown-menu(aria-labelledby='dropdownMenuButton')
+        //-         a.dropdown-item(href='#') CD
+        //-         a.dropdown-item(href='#') Cassette
+        //-         a.dropdown-item(href='#') LP
+        //-         a.dropdown-item(href='#') 45
+        //-         a.dropdown-item(href='#') Digital
+        input.btn.btn-primary(type='submit', value='Submit')

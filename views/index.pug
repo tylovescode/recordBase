@@ -2,6 +2,7 @@ extends layout
         
 block content
     h1 #{title}
-    ul
+    ul.list-group
         each record, i in records
-            li= record.title
+            li.list-group-item
+                a(href='/record/'+record._id)= record.title

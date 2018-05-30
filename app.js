@@ -1,6 +1,7 @@
 const express = require('express');
 const path = require('path');
 const mongoose = require('mongoose');
+const bodyParser = require('body-parser');
 
 //Connect to mongoose
 mongoose.connect('mongodb://localhost/recordsbase');
@@ -19,37 +20,59 @@ db.on('error', function(err) {
 //Initialize app
 const app = express();
 
+//Bring in models
+const Record = require('./models/records');
+
 //Load View Engine - folder where views will be kept
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
 
+//Body Parser
+app.use(bodyParser.urlencoded({extended: false}));
+app.use(bodyParser.json());
+
+//Set public folder
+app.use(express.static(path.join(__dirname, 'public')));
+
 //Home Route
 app.get('/', (req, res) => {
-    let records = [
-        {
-            id: 1,
-            title: 'Dr. Feelgood',
-            artist: 'Motley Crue',
-            format: 'CD'
-        },
-        {
-            id: 2,
-            title: 'Shout at the Devil',
-            artist: 'Motley Crue',
-            format: 'Vinyl'
-        },
-        {
-            id: 3,
-            title: 'Ten',
-            artist: 'Pearl Jam',
-            format: 'Cassette'
-        },
-    ]
-    res.render('index', {
-        title: 'Records',
-        records: records
+    Record.find({}, (err, records) => {
+        if (err) {
+            console.log(err);
+        } else {
+        res.render('index', {
+            title: 'Records',
+            records: records
+        });
+    }
     });
 });
+
+//Get single record
+app.get('/record/:id', (req, res) => {
+    Record.findById(req.params.id, (err, record) => {
+        res.render('record', {
+            record: record
+        });
+    });
+})
+
+//Add Submit POST Route
+app.post('/records/add', (req, res) => {
+    let record = new Record();
+    record.title = req.body.title;
+    record.artist = req.body.artist;
+    record.format = req.body.format;
+
+    record.save( (err) => {
+        if (err) {
+            console.log(err);
+            return;
+        } else {
+            res.redirect('/');
+        }
+    })
+})
 
 //Add records route
 app.get('/records/add', (req, res) => {
