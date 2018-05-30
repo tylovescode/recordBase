@@ -2,16 +2,16 @@ extends layout
         
 block content
     h1 #{title}
-    form(method='POST', action='/records/add')
+    form(method='POST', action='/records/edit/'+record._id)
         #form-group
             label Title:
-                input.form-control(name='title', type='text')
+                input.form-control(name='title', type='text', value=record.title)
         #form-group
             label Artist:
-                input.form-control(name='artist', type='text')
+                input.form-control(name='artist', type='text', value=record.artist)
         #form-group
             label Format:
-                input.form-control(name='format', type='text')
+                input.form-control(name='format', type='text', value=record.format)
         //- .dropdown
         //-     button#dropdownMenuButton.btn.btn-secondary.dropdown-toggle(type='button', data-toggle='dropdown' aria-haspopup='true', aria-expanded='false')
         //-         | Format

@@ -81,6 +81,38 @@ app.get('/records/add', (req, res) => {
     });
 });
 
+//Load edit form
+app.get('/record/edit/:id', (req, res) => {
+    Record.findById(req.params.id, (err, record) => {
+        res.render('edit_record', {
+            title: 'Edit Record',
+            record: record
+        });
+    });
+})
+
+//UPDATE Submit POST Route
+app.post('/records/edit/:id', (req, res) => {
+    //Set record to an empty object, then add to it
+    let record = {};
+    record.title = req.body.title;
+    record.artist = req.body.artist;
+    record.format = req.body.format;
+
+    let query = {_id:req.params.id}
+
+    //Using the model this time to update record
+    Record.update(query, record, (err) => {
+        if (err) {
+            console.log(err);
+            return;
+        } else {
+            res.redirect('/');
+        }
+    })
+})
+
+//Start Server
 app.listen(3000, function() {
     console.log('Server started on port 3000')
 });
