@@ -25,6 +25,8 @@ html
                     //-         a.dropdown-item(href='#') Another action
                     //-         a.dropdown-item(href='#') Something else here
         .container
+            //-Bring in messages.pug content
+            != messages('message', locals)
             block content
             br
             hr
