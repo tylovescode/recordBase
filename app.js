@@ -2,7 +2,7 @@ const express = require('express');
 const path = require('path');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
-// const expressValidator = require('express-validator');
+const { check, validationResult } = require('express-validator/check')
 const flash = require('connect-flash');
 const session = require('express-session');
 
@@ -51,8 +51,6 @@ app.use(function (req, res, next) {
   next();
 });
 
-//Express Validator Middleware
-
 
 //Home Route
 app.get('/', (req, res) => {
@@ -68,86 +66,9 @@ app.get('/', (req, res) => {
     });
 });
 
-//Get single record
-app.get('/record/:id', (req, res) => {
-    Record.findById(req.params.id, (err, record) => {
-        res.render('record', {
-            record: record
-        });
-    });
-});
-
-//ADD RECORD Submit POST Route
-app.post('/records/add', (req, res) => {
-    let record = new Record();
-    record.title = req.body.title;
-    record.artist = req.body.artist;
-    record.format = req.body.format;
-
-    record.save( (err) => {
-        if (err) {
-            console.log(err);
-            return;
-        } else {
-            //Sets flash message in message.pug section
-            req.flash('success', 'Record Added');
-            res.redirect('/');
-        }
-    });
-});
-
-//Add records route
-app.get('/records/add', (req, res) => {
-    res.render('add_record', {
-        title: 'Add a Record'
-    });
-});
-
-//Load edit form
-app.get('/record/edit/:id', (req, res) => {
-    Record.findById(req.params.id, (err, record) => {
-        res.render('edit_record', {
-            title: 'Edit Record',
-            record: record
-        });
-    });
-});
-
-//UPDATE Submit POST Route
-app.post('/records/edit/:id', (req, res) => {
-    //Set record to an empty object, then add to it
-    let record = {};
-    record.title = req.body.title;
-    record.artist = req.body.artist;
-    record.format = req.body.format;
-
-    let query = {_id:req.params.id}
-
-    //Using the model this time to update record
-    Record.update(query, record, (err) => {
-        if (err) {
-            console.log(err);
-            return;
-        } else {
-            req.flash('success', 'Record Updated');
-            res.redirect('/');
-        }
-    });
-});
-
-//DELETE request
-app.delete('/record/:id', (req, res) => {
-    let query = {_id:req.params.id}
-
-    Record.remove(query, (err) => {
-        if(err) {
-            console.log(err);
-        }
-        //Status 200 is default, so just send message
-        res.send('Success');
-        });
-    });
-
+//Route Files
+let records = require('./routes/records');
+app.use('/records', records);
 
 //Start Server
 app.listen(3000, function() {
