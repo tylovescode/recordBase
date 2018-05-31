@@ -2,6 +2,9 @@ const express = require('express');
 const path = require('path');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
+// const expressValidator = require('express-validator');
+const flash = require('connect-flash');
+const session = require('express-session');
 
 //Connect to mongoose
 mongoose.connect('mongodb://localhost/recordsbase');
@@ -34,6 +37,23 @@ app.use(bodyParser.json());
 //Set public folder
 app.use(express.static(path.join(__dirname, 'public')));
 
+//Express Session Middleware
+app.use(session({
+    secret:'keyboardcat',
+    resave: true,
+    saveUninitialized: true
+}));
+
+//Express Messages Middleware
+app.use(require('connect-flash')());
+app.use(function (req, res, next) {
+  res.locals.messages = require('express-messages')(req, res);
+  next();
+});
+
+//Express Validator Middleware
+
+
 //Home Route
 app.get('/', (req, res) => {
     Record.find({}, (err, records) => {
@@ -57,7 +77,7 @@ app.get('/record/:id', (req, res) => {
     });
 });
 
-//Add Submit POST Route
+//ADD RECORD Submit POST Route
 app.post('/records/add', (req, res) => {
     let record = new Record();
     record.title = req.body.title;
@@ -69,6 +89,8 @@ app.post('/records/add', (req, res) => {
             console.log(err);
             return;
         } else {
+            //Sets flash message in message.pug section
+            req.flash('success', 'Record Added');
             res.redirect('/');
         }
     });
@@ -107,6 +129,7 @@ app.post('/records/edit/:id', (req, res) => {
             console.log(err);
             return;
         } else {
+            req.flash('success', 'Record Updated');
             res.redirect('/');
         }
     });
