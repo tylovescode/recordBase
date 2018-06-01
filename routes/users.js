@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 
 //Bring in models
-const User = require('../models/users');
+const User = require('../models/user');
 
 //Register Form
 router.get('/register', (req, res) => {
