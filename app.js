@@ -5,9 +5,10 @@ const bodyParser = require('body-parser');
 
 const flash = require('connect-flash');
 const session = require('express-session');
+const config = require('./config/database');
 
 //Connect to mongoose
-mongoose.connect('mongodb://localhost/recordsbase');
+mongoose.connect(config.database);
 let db = mongoose.connection;
 
 //Check connection
