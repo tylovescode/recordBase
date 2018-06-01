@@ -2,7 +2,7 @@ const express = require('express');
 const path = require('path');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
-const { check, validationResult } = require('express-validator/check')
+
 const flash = require('connect-flash');
 const session = require('express-session');
 
@@ -68,7 +68,9 @@ app.get('/', (req, res) => {
 
 //Route Files
 let records = require('./routes/records');
+let users = require('./routes/users');
 app.use('/records', records);
+app.use('/users', users);
 
 //Start Server
 app.listen(3000, function() {
