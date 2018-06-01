@@ -36,42 +36,34 @@ router.post('/register',
   password: req.body.password
  });
 
- bcrypt.genSalt(10, function(err, salt) {
-    bcrypt.hash(req.body.password, salt, function(err, hash) {
-        if(err) {
-            console.log(err);
-        } else {
-        newUser.name = req.body.name;
-        newUser.email = req.body.email;
-        newUser.username = req.body.username;
-        newUser.password = hash;
-        }
-    })
-})
-
  const errors = validationResult(req);
 
  if (!errors.isEmpty()) {
-  console.log(errors);
-     res.render('register',
-      { 
-       newUser:newUser,
-       errors: errors.mapped()
-      });
+    console.log(errors);
+       res.render('register',
+        { 
+         newUser:newUser,
+         errors: errors.mapped()
+        });
+     }
+     else{
+      bcrypt.genSalt(10, function(err, salt) {
+          bcrypt.hash(newUser.password, salt, function(err, hash) {
+              if(err) {
+                  console.log(err);
+              }
+              newUser.password = hash;
+              newUser.save(err=>{
+                 if(err)throw err;
+                 req.flash('success','You are now registered and can log in');
+                 res.redirect('/users/login');
+              });
+          })
+      })
    }
-   else {
-    
-
-  newUser.save(err=>{
-   if(err)throw err;
-   req.flash('success','You are now registered and can log in');
-   res.redirect('/users/login');
-  });
- }
-});
-
+  })
 router.get('/login', (req, res) => {
     res.render('login');
-})
+});
 
-module.exports = router;
+module.exports = router
