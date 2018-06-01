@@ -62,7 +62,9 @@ router.post('/register',
       })
    }
   })
-router.get('/login', (req, res) => {
+
+//LOGIN PAGE
+  router.get('/login', (req, res) => {
     res.render('login');
 });
 
