@@ -16,12 +16,16 @@ html
                         a.nav-link(href='/')
                             | Home 
                         span.sr-only (current)
-                    li.nav-item
-                        a.nav-link(href='/records/add') Add a Record
+                    //-If not logged in the add record will not appear
+                    if user
+                        li.nav-item
+                             a.nav-link(href='/records/add') Add a Record
                 ul.nav.navbar-nav.navbar-right
                     //-If user (logged in) then Logout button will appear
                     if user
-                        li 
+                        li.nav-item
+                            a.nav-link(href='#') Hello, #{user.name}
+                        li.nav-item
                             a.nav-link(href='/users/logout') Logout
                     else
                         li.nav-item

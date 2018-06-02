@@ -13,6 +13,12 @@ let recordSchema = mongoose.Schema({
     format: {
         type: String,
         required: true
+    },
+    notes: {
+        type: String
+    },
+    author: {
+        type: String
     }
 });
 
